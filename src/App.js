@@ -197,6 +197,8 @@ export default function ClubAnalytics() {
   const [userConversionMinFilter, setUserConversionMinFilter] = useState(0);
   const [userParticipantsOnly, setUserParticipantsOnly] = useState(false);
   const [selectedUserDetail, setSelectedUserDetail] = useState(null);
+  const [usersSortBy, setUsersSortBy] = useState("name"); // "name"|"totalRegs"|"totalParticipated"|"conversion"
+  const [usersSortDir, setUsersSortDir] = useState("desc"); // "asc"|"desc"
 
   const processFile = (file) => {
     return new Promise(resolve => {
@@ -840,11 +842,11 @@ export default function ClubAnalytics() {
                       <>
                         <Legend wrapperStyle={{fontSize:11}}/>
                         {analytics.events.slice(0,8).map((ev,i)=>(
-                          <Bar key={ev} dataKey={ev} stackId="a" fill={COLORS[i%COLORS.length]}/>
+                          <Bar key={ev} dataKey={ev} stackId="a" fill={COLORS[i%COLORS.length]} maxBarSize={50}/>
                         ))}
                       </>
                     ) : (
-                      <Bar dataKey="registrazioni" fill="#8b5cf6" radius={[4,4,0,0]}/>
+                      <Bar dataKey="registrazioni" fill="#8b5cf6" radius={[4,4,0,0]} maxBarSize={50}/>
                     )}
                   </BarChart>
                 </ResponsiveContainer>
@@ -877,14 +879,14 @@ export default function ClubAnalytics() {
                       <>
                         <Legend wrapperStyle={{fontSize:11}}/>
                         {analytics.events.slice(0,8).map((ev,i)=>(
-                          <Bar key={ev} dataKey={ev} stackId="a" fill={COLORS[i%COLORS.length]}/>
+                          <Bar key={ev} dataKey={ev} stackId="a" fill={COLORS[i%COLORS.length]} maxBarSize={50}/>
                         ))}
                       </>
                     ) : (
                       <>
                         <Legend wrapperStyle={{fontSize:11}}/>
-                        <Bar dataKey="count" name="Registrazioni" fill="#8b5cf6" radius={[4,4,0,0]}/>
-                        <Bar dataKey="partecipato" name="Partecipato" fill="#06b6d4" radius={[4,4,0,0]}/>
+                        <Bar dataKey="count" name="Registrazioni" fill="#8b5cf6" radius={[4,4,0,0]} maxBarSize={50}/>
+                        <Bar dataKey="partecipato" name="Partecipato" fill="#06b6d4" radius={[4,4,0,0]} maxBarSize={50}/>
                       </>
                     )}
                   </BarChart>
@@ -953,8 +955,8 @@ export default function ClubAnalytics() {
                   <YAxis tick={{fill:"#94a3b8",fontSize:11}}/>
                   <Tooltip contentStyle={tt}/>
                   <Legend wrapperStyle={{fontSize:11}}/>
-                  <Bar dataKey="count" name="Registrazioni" fill="#8b5cf6" radius={[4,4,0,0]}/>
-                  <Bar dataKey="partecipato" name="Partecipato" fill="#10b981" radius={[4,4,0,0]}/>
+                  <Bar dataKey="count" name="Registrazioni" fill="#8b5cf6" radius={[4,4,0,0]} maxBarSize={50}/>
+                  <Bar dataKey="partecipato" name="Partecipato" fill="#10b981" radius={[4,4,0,0]} maxBarSize={50}/>
                 </BarChart>
               </ResponsiveContainer>
             </Section>
@@ -966,7 +968,7 @@ export default function ClubAnalytics() {
                   <XAxis dataKey="fascia" tick={{fill:"#94a3b8",fontSize:11}}/>
                   <YAxis tick={{fill:"#94a3b8",fontSize:11}} unit="%" domain={[0,100]}/>
                   <Tooltip contentStyle={tt} formatter={v=>typeof v==="number"?`${v}%`:v}/>
-                  <Bar dataKey="conversione" name="Conversione %" fill="#f59e0b" radius={[4,4,0,0]}>
+                  <Bar dataKey="conversione" name="Conversione %" fill="#f59e0b" radius={[4,4,0,0]} maxBarSize={50}>
                     {analytics.convByFascia.map((e,i)=>(
                       <Cell key={i} fill={e.conversione>=65?"#10b981":e.conversione>=45?"#f59e0b":"#ef4444"}/>
                     ))}
@@ -1042,8 +1044,8 @@ export default function ClubAnalytics() {
                   <YAxis tick={{fill:"#94a3b8",fontSize:11}}/>
                   <Tooltip contentStyle={tt}/>
                   <Legend wrapperStyle={{fontSize:11}}/>
-                  <Bar dataKey="total" name="Registrazioni" fill="#8b5cf6" radius={[4,4,0,0]}/>
-                  <Bar dataKey="partecipato" name="Partecipato" fill="#06b6d4" radius={[4,4,0,0]}/>
+                  <Bar dataKey="total" name="Registrazioni" fill="#8b5cf6" radius={[4,4,0,0]} maxBarSize={50}/>
+                  <Bar dataKey="partecipato" name="Partecipato" fill="#06b6d4" radius={[4,4,0,0]} maxBarSize={50}/>
                 </BarChart>
               </ResponsiveContainer>
             </Section>
@@ -1058,7 +1060,7 @@ export default function ClubAnalytics() {
                     <Tooltip contentStyle={tt}/>
                     <Legend wrapperStyle={{fontSize:11}}/>
                     {analytics.events.slice(0,8).map((ev,i)=>(
-                      <Bar key={ev} dataKey={ev} stackId="a" fill={COLORS[i%COLORS.length]}/>
+                      <Bar key={ev} dataKey={ev} stackId="a" fill={COLORS[i%COLORS.length]} maxBarSize={50}/>
                     ))}
                   </BarChart>
                 </ResponsiveContainer>
@@ -1145,7 +1147,7 @@ export default function ClubAnalytics() {
                   <Tooltip contentStyle={tt}/>
                   <Legend wrapperStyle={{fontSize:11}}/>
                   {editionAnalytics.editions.map((ed,i)=>(
-                    <Bar key={ed.date} dataKey={ed.date} fill={COLORS[i%COLORS.length]} radius={[4,4,0,0]} name={ed.date}/>
+                    <Bar key={ed.date} dataKey={ed.date} fill={COLORS[i%COLORS.length]} radius={[4,4,0,0]} name={ed.date} maxBarSize={50}/>
                   ))}
                 </BarChart>
               </ResponsiveContainer>
@@ -1187,8 +1189,8 @@ export default function ClubAnalytics() {
                   <YAxis type="category" dataKey="event" tick={{fill:"#94a3b8",fontSize:10}} width={170}/>
                   <Tooltip contentStyle={tt}/>
                   <Legend wrapperStyle={{fontSize:11}}/>
-                  <Bar dataKey="registrations" name="Registrazioni" fill="#8b5cf6" radius={[0,4,4,0]}/>
-                  <Bar dataKey="entries" name="Presenze" fill="#06b6d4" radius={[0,4,4,0]}/>
+                  <Bar dataKey="registrations" name="Registrazioni" fill="#8b5cf6" radius={[0,4,4,0]} maxBarSize={50}/>
+                  <Bar dataKey="entries" name="Presenze" fill="#06b6d4" radius={[0,4,4,0]} maxBarSize={50}/>
                 </BarChart>
               </ResponsiveContainer>
             </Section>
@@ -1215,7 +1217,7 @@ export default function ClubAnalytics() {
                   <XAxis dataKey="event" tick={{fill:"#94a3b8",fontSize:9}} angle={-12} textAnchor="end" height={50}/>
                   <YAxis tick={{fill:"#94a3b8",fontSize:11}} unit="%" domain={[0,100]}/>
                   <Tooltip contentStyle={tt} formatter={v=>`${v}%`}/>
-                  <Bar dataKey="conversion" name="Conversione" radius={[4,4,0,0]}>
+                  <Bar dataKey="conversion" name="Conversione" radius={[4,4,0,0]} maxBarSize={50}>
                     {analytics.eventStats.map((e,i)=><Cell key={i} fill={parseFloat(e.conversion)>=65?"#10b981":parseFloat(e.conversion)>=45?"#f59e0b":"#ef4444"}/>)}
                   </Bar>
                 </BarChart>
@@ -1331,10 +1333,22 @@ export default function ClubAnalytics() {
                 <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
                   <thead>
                     <tr style={{borderBottom:"2px solid #334155"}}>
-                      <th style={{textAlign:"left",padding:"10px 12px",color:"#94a3b8",fontWeight:600}}>Nome</th>
-                      <th style={{textAlign:"right",padding:"10px 12px",color:"#94a3b8",fontWeight:600}}>Registrazioni</th>
-                      <th style={{textAlign:"right",padding:"10px 12px",color:"#94a3b8",fontWeight:600}}>Partecipazioni</th>
-                      <th style={{textAlign:"right",padding:"10px 12px",color:"#94a3b8",fontWeight:600}}>Conversione %</th>
+                      {[
+                        {key:"name",label:"Nome",align:"left"},
+                        {key:"totalRegs",label:"Registrazioni",align:"right"},
+                        {key:"totalParticipated",label:"Partecipazioni",align:"right"},
+                        {key:"conversion",label:"Conversione %",align:"right"},
+                      ].map(col=>(
+                        <th key={col.key}
+                          onClick={()=>{
+                            if(usersSortBy===col.key) setUsersSortDir(d=>d==="asc"?"desc":"asc");
+                            else { setUsersSortBy(col.key); setUsersSortDir(col.key==="name"?"asc":"desc"); }
+                          }}
+                          style={{textAlign:col.align,padding:"10px 12px",color:usersSortBy===col.key?"#a78bfa":"#94a3b8",fontWeight:600,cursor:"pointer",userSelect:"none",whiteSpace:"nowrap"}}
+                        >
+                          {col.label} {usersSortBy===col.key?(usersSortDir==="asc"?"▲":"▼"):""}
+                        </th>
+                      ))}
                       <th style={{textAlign:"left",padding:"10px 12px",color:"#94a3b8",fontWeight:600}}>Tipo</th>
                       <th style={{textAlign:"left",padding:"10px 12px",color:"#94a3b8",fontWeight:600}}>Ultima Registrazione</th>
                     </tr>
@@ -1347,6 +1361,13 @@ export default function ClubAnalytics() {
                         const matchConv = parseFloat(u.conversion) >= userConversionMinFilter;
                         const matchPart = !userParticipantsOnly || u.totalParticipated > 0;
                         return matchName && matchSeg && matchConv && matchPart;
+                      })
+                      ?.sort((a,b)=>{
+                        let va,vb;
+                        if(usersSortBy==="name"){va=a.name.toLowerCase();vb=b.name.toLowerCase();return usersSortDir==="asc"?va.localeCompare(vb):vb.localeCompare(va);}
+                        if(usersSortBy==="conversion"){va=parseFloat(a.conversion);vb=parseFloat(b.conversion);}
+                        else{va=a[usersSortBy];vb=b[usersSortBy];}
+                        return usersSortDir==="asc"?va-vb:vb-va;
                       })
                       ?.map((user,i)=>(
                         <tr
