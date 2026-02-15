@@ -29,14 +29,14 @@ function parseItalianDate(dateStr, timeStr) {
     const month = MESI_IT[m[2].toLowerCase()];
     const year = parseInt(m[3]);
     if (month !== undefined) {
-      const t = timeStr ? String(timeStr).trim().match(/(\d{1,2})[:\.](\d{2})/) : null;
+      const t = timeStr ? String(timeStr).trim().match(/(\d{1,2})[:.](\d{2})/) : null;
       return new Date(year, month, day, t ? parseInt(t[1]) : 0, t ? parseInt(t[2]) : 0);
     }
   }
   // DD/MM/YYYY
-  m = s.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+  m = s.match(/(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{4})/);
   if (m) {
-    const t = timeStr ? String(timeStr).trim().match(/(\d{1,2})[:\.](\d{2})/) : null;
+    const t = timeStr ? String(timeStr).trim().match(/(\d{1,2})[:.](\d{2})/) : null;
     return new Date(parseInt(m[3]), parseInt(m[2])-1, parseInt(m[1]), t?parseInt(t[1]):0, t?parseInt(t[2]):0);
   }
   return null;
